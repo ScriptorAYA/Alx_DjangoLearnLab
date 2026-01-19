@@ -1,2 +1,1 @@
 # LibraryProject
-not empty
