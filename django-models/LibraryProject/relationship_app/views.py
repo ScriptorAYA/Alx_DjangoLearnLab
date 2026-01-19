@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import DetailView
-from .models import Book, Library
+from .models import Book, Library  # <--- Library must be here
 
 # Function-based view
 def list_books(request):
@@ -10,6 +10,6 @@ def list_books(request):
 # Class-based view
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = "relationship_app/library_detail.html"
+    template_name = "relationship_app/library_detail.html"  # must include app name
     context_object_name = "library"
 
