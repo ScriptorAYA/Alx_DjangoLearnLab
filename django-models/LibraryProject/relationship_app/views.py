@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
@@ -5,6 +6,19 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.detail import DetailView
 from .models import Book, Library
 from .forms import BookForm
+
+@permission_required('relationship_app.can_add_book', raise_exception=True)
+def add_book(request):
+    # your code here
+    pass
+
+@permission_required('relationship_app.can_change_book', raise_exception=True)
+def edit_book(request, pk):
+    pass
+
+@permission_required('relationship_app.can_delete_book', raise_exception=True)
+def delete_book(request, pk):
+    pass
 
 # ------------------------
 # Add Book View
