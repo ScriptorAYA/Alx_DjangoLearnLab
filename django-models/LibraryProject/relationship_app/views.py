@@ -22,12 +22,12 @@ class LibraryDetailView(DetailView):
 # -------------------------
 # User Registration View
 # -------------------------
-def register_view(request):
+def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Auto-login after registration
+            login(request, user)
             return redirect("list_books")
     else:
         form = UserCreationForm()
