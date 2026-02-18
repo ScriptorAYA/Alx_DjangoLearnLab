@@ -1,5 +1,6 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import Book
+from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import BookSerializer
 from rest_framework import generics, permissions
 
@@ -15,6 +16,28 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.AllowAny]
+
+        # 🔹 Enable filtering, search, and ordering
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    # 🔹 Fields that can be filtered using query params
+    filterset_fields = ['title', 'author__name', 'publication_year']
+
+    # 🔹 Fields to search by using ?search=
+    search_fields = ['title', 'author__name']
+
+    # 🔹 Fields allowed for ordering using ?ordering=
+    ordering_fields = ['title', 'publication_year', 'author__name']
+    ordering = ['title']  # default ordering
+
+"""
+BookListView:
+
+- Supports filtering by title, author name, and publication year.
+- Supports search by title and author name.
+- Supports ordering by title, publication year, or author name.
+- Read-only for unauthenticated users; write requires authentication elsewhere.
+"""
 
 
 # ------------------------------------------------------------
