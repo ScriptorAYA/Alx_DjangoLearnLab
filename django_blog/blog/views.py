@@ -6,8 +6,23 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
+from django.shortcuts import render
+from django.db.models import Q
+from .models import Post
 
+def search_posts(request):
+    query = request.GET.get('q', '')
+    results = Post.objects.filter(
+        Q(title__icontains=query) |
+        Q(content__icontains=query) |
+        Q(tags__name__icontains=query)
+    ).distinct()
 
+    context = {
+        'results': results,
+        'query': query
+    }
+    return render(request, 'blog/search_results.html', context)
 
 def home(request):
     return render(request, 'blog/home.html')
