@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CommentCreateView, CommentUpdateView, CommentDeleteView, search_posts, posts_by_tag
+from .views import CommentCreateView, CommentUpdateView, CommentDeleteView, search_posts, posts_by_tag, PostByTagListView
 from .views import (
     PostListView,
     PostDetailView,
@@ -23,6 +23,7 @@ path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='delete-comme
 path('search/', search_posts, name='search-posts'),
 path('search/', search_posts, name='search-posts'),
     path('tags/<str:tag_name>/', posts_by_tag, name='posts-by-tag'),
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='posts-by-tag'),
 
 
 ]
