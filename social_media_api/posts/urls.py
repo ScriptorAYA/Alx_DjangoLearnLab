@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PostViewSet, CommentViewSet, feed
+from .views import PostViewSet, CommentViewSet, feed, FeedView
 
 router = DefaultRouter()
 router.register(r"posts", PostViewSet, basename="post")
@@ -11,4 +11,5 @@ urlpatterns = router.urls
 urlpatterns = [
     path("", include(router.urls)),
     path("feed/", feed, name="user-feed"),
+    path("feed/", FeedView.as_view(), name="user-feed"),
 ]

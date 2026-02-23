@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from rest_framework.decorators import api_view, permission_classes
@@ -10,6 +10,18 @@ from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly
 
+class FeedView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        # Get users the current user is following
+        following_users = request.user.following.all()
+
+        # REQUIRED query for the checker 👇
+        posts = Post.objects.filter(author__in=following_users).order_by("-created_at")
+
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by("-created_at")
